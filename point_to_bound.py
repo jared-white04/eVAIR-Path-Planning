@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import random as rand
 import matplotlib.patches as patches
+import math
 
 class Point:
     def __init__(self, x, y, z):
@@ -8,15 +9,30 @@ class Point:
         self.y = y
         self.z = z
 
+def Euclidean(p1, p2):
+    return (math.sqrt( (p1.x - p2.x)**2 + (p1.y - p2.y)**2 ))
+
 def PointsToBounds(objectPoints, bounds):
     boundExtent = 30
     
-    for point in objectPoints:
-        x1 = point.x - boundExtent
-        x2 = point.x + boundExtent
-        y1 = point.y - boundExtent
-        y2 = point.y + boundExtent
-        bounds.append(((x1, x2),(y1, y2)))
+    for i in range(len(objectPoints)):
+        point = objectPoints[i]
+        pointInRange = False
+        
+        for j in range(i):
+            testPoint = objectPoints[j]
+            distance = Euclidean(point, testPoint)
+            if distance <= boundExtent*1.2:
+                print(f'Point ({testPoint.x}, {testPoint.y}) within {distance} of ({point.x}, {point.y})')
+                pointInRange = True
+                break
+            
+        if not pointInRange:
+            x1 = point.x - boundExtent
+            x2 = point.x + boundExtent
+            y1 = point.y - boundExtent
+            y2 = point.y + boundExtent
+            bounds.append(((x1, x2),(y1, y2)))
         
 def GeneratePoints(objectPoints, num):
     for i in range(num):
@@ -48,7 +64,7 @@ def DrawGraph(objectPoints, bounds):
 
 def main(args=None):
     objectPoints = []
-    GeneratePoints(objectPoints, 100)
+    GeneratePoints(objectPoints, 200)
     
     bounds = []
     PointsToBounds(objectPoints, bounds)
