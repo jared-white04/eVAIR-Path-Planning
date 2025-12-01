@@ -15,19 +15,21 @@ def Euclidean(p1, p2):
 def PointsToBounds(objectPoints, bounds):
     boundExtent = 30
     
-    for i in range(len(objectPoints)):
-        point = objectPoints[i]
+    for point in objectPoints:
         pointInRange = False
         
-        for j in range(i):
-            testPoint = objectPoints[j]
-            distance = Euclidean(point, testPoint)
-            if distance <= boundExtent*1.2:
-                print(f'Point ({testPoint.x}, {testPoint.y}) within {distance} of ({point.x}, {point.y})')
+        for box in bounds:
+            center = Point((box[0][0] + box[0][1])/2, (box[1][0] + box[1][1])/2, 0)
+            distance = Euclidean(point, center)
+            # print(f'\033[94mDistance from ({point.x}, {point.y}) to ({center.x}, {center.y}) is {distance}\033[00m')
+            if distance <= boundExtent:
+                
+                # print(f'Point ({center.x}, {center.y}) within {distance} of ({point.x}, {point.y})')
                 pointInRange = True
                 break
             
         if not pointInRange:
+            print(f'\033[92mPoint ({point.x}, {point.y}) has no neighbors within 100\033[00m')
             x1 = point.x - boundExtent
             x2 = point.x + boundExtent
             y1 = point.y - boundExtent
@@ -44,16 +46,15 @@ def GeneratePoints(objectPoints, num):
         objectPoints.append(newPoint)
 
 
-def DrawGraph(objectPoints, bounds):
+def DrawGraph(bounds):
     fig, ax = plt.subplots()
     
-    for i in range(len(bounds)):
-        bound = bounds[i]
-        point = objectPoints[i]
+    for box in bounds:
+        point = Point((box[0][0] + box[0][1])/2, (box[1][0] + box[1][1])/2, 0)
+        sLength = abs(box[0][1] - box[0][0])
         
         ax.plot(point.x, point.y, 'o', color=(0, 0, 0))
         
-        sLength = abs(bound[0][1] - bound[0][0])
         boundBox = patches.Rectangle((point.x - sLength/2, point.y - sLength/2), sLength, sLength, edgecolor='red', facecolor='none')
         ax.add_patch(boundBox)
         
@@ -64,12 +65,12 @@ def DrawGraph(objectPoints, bounds):
 
 def main(args=None):
     objectPoints = []
-    GeneratePoints(objectPoints, 200)
+    GeneratePoints(objectPoints, 100)
     
     bounds = []
     PointsToBounds(objectPoints, bounds)
     
-    DrawGraph(objectPoints, bounds)
+    DrawGraph(bounds)
     
 if __name__ == '__main__':
     main()
