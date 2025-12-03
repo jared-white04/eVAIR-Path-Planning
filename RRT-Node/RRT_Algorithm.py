@@ -53,6 +53,7 @@ def ShowMap(path, goal, map, vertices):
 def GetRandomPosition(area):
     min_x, max_x = area[0][0], area[0][1]
     min_y, max_y = area[1][0], area[1][1]
+    
     randx = rand.randint(min_x, max_x)
     randy = rand.randint(min_y, max_y)
     return (randx, randy)
@@ -83,7 +84,7 @@ def NearestVertex(vertices, point):
 
 
 def MoveToClosest(point, nearest, xMax, yMax):
-    delta_q = 2
+    delta_q = 4
     vector = (point[0] - nearest[0], point[1] - nearest[1])
     magnitude = Euclidean(point, nearest)
     if (magnitude == 0):

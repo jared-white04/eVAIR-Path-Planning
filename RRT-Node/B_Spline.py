@@ -87,8 +87,8 @@ def ShowBSpline(cpoints, tpoints, goal, map_data, vertices, degree=3):
                 ax.plot(c, r, '.', color=(0, .5, .5))
 
     # --- Draw vertices ---
-    for v in vertices:
-        ax.plot(v[0], v[1], '.', color=(0, .75, .75))
+    # for v in vertices:
+    #     ax.plot(v[0], v[1], '.', color=(0, .75, .75))
 
     # --- Evaluate B-spline at tPoints ---
     xs = [p[0] for p in cpoints]
