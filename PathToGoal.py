@@ -5,8 +5,8 @@ import math
 from scipy.interpolate import splprep, splev
 import matplotlib.pyplot as plt
 import time
-# import requests
-# import argparse
+import requests
+import argparse
 
 # Calculate distance
 def Euclidean(p1, p2):
@@ -361,42 +361,40 @@ def SplineToDistances(bpoints):
 
 def MoveForward(distance, v, ip_addr):
     t = (0.05 * distance) / v
-    command = ""
+    command = {"T":13,"X":0.2,"Z":0.0}
     
     start = time.time()
     while (time.time() - start) < t:
-        pass
-        # url = "http://" + ip_addr + "/js?json=" + command
-        # response = requests.get(url)
-        # content = response.text
-        # print(content)
-    # command = ""
-    # url = "http://" + ip_addr + "/js?json=" + command
-    # response = requests.get(url)
+        url = "http://" + ip_addr + "/js?json=" + command
+        response = requests.get(url)
+        content = response.text
+        print(content)
+    command = {"T":13,"X":0.0,"Z":0.0}
+    url = "http://" + ip_addr + "/js?json=" + command
+    response = requests.get(url)
 
 def Turn(angle, v, ip_addr):
     t = angle / v
-    command = ""
+    command = {"T":13,"X":0.0,"Z":0.3}
     
     start = time.time()
     while (time.time() - start) < t:
-        pass
-        # url = "http://" + ip_addr + "/js?json=" + command
-        # response = requests.get(url)
-        # content = response.text
-        # print(content)
-    # command = ""
-    # url = "http://" + ip_addr + "/js?json=" + command
-    # response = requests.get(url)
+        url = "http://" + ip_addr + "/js?json=" + command
+        response = requests.get(url)
+        content = response.text
+        print(content)
+    command = {"T":13,"X":0.0,"Z":0.0}
+    url = "http://" + ip_addr + "/js?json=" + command
+    response = requests.get(url)
 
 def FollowSpline(path):
     print(f"\033[93mConnecting to Rover...\033[0m")
-    # parser = argparse.ArgumentParser(description='Http JSON Communication')
-    # parser.add_argument('ip', type=str, help='IP address: 192.168.10.104')
+    parser = argparse.ArgumentParser(description='Http JSON Communication')
+    parser.add_argument('ip', type=str, help='IP address: 192.168.10.104')
 
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
-    # ip_addr = args.ip
+    ip_addr = args.ip
     ip_addr = 0
     print(f"\033[92mSuccessfully connected!\033[0m")
     
